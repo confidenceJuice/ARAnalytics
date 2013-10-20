@@ -96,6 +96,9 @@ static ARAnalytics *_sharedAnalytics;
         [self setupParseAnalyticsWithApplicationID:analyticsDictionary[ARParseApplicationID] clientKey:analyticsDictionary[ARParseClientKey]];
     }
 
+    if (analyticsDictionary[ARHeapAppID]) {
+        [self setupHeapAnalyticsWithApplicationID:analyticsDictionary[ARHeapAppID]];
+    }
 
 
     // Crashlytics / Crittercism should stay at the bottom of this,
@@ -235,6 +238,9 @@ static ARAnalytics *_sharedAnalytics;
 +(void)setupParseAnalyticsWithApplicationID:(NSString *)appID clientKey:(NSString *)clientKey {
 #ifdef AR_PARSEANALYTICS_EXISTS
     ParseAnalyticsProvider *provider = [[ParseAnalyticsProvider alloc] initWithApplicationID:appID clientKey:clientKey];
++ (void)setupHeapAnalyticsWithApplicationID:(NSString *)appID {
+#ifdef AR_HEAPANALYTICS_EXISTS
+    HeapAnalyticsProvider *provider = [[HeapAnalyticsProvider alloc] initWithIdentifier:appID];
     _sharedAnalytics.providers = [_sharedAnalytics.providers setByAddingObject:provider];
 #endif
 }
@@ -406,4 +412,5 @@ const NSString *ARHockeyAppLiveID = @"ARHockeyAppLiveID";
 const NSString *ARHockeyAppBetaID = @"ARHockeyAppBetaID";
 const NSString *ARParseApplicationID = @"ARParseApplicationID";
 const NSString *ARParseClientKey = @"ARParseClientKey";
+const NSString *ARHeapAppID = @"ARHeapAppID";
 
